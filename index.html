@@ -4,6 +4,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Léxico — Diccionario</title>
+<!-- 1. Carga tu diccionario -->
+<script src="palabras.js"></script>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,300;1,400&display=swap" rel="stylesheet">
 <style>
   :root {
@@ -46,7 +48,6 @@
     padding: 60px 40px;
   }
 
-  /* Header */
   header {
     text-align: center;
     margin-bottom: 56px;
@@ -80,13 +81,7 @@
     opacity: 0.7;
   }
 
-  .rule {
-    display: flex;
-    align-items: center;
-    gap: 16px;
-    margin-top: 28px;
-    justify-content: center;
-  }
+  .rule { display: flex; align-items: center; gap: 16px; margin-top: 28px; justify-content: center; }
   .rule span { width: 80px; height: 1px; background: var(--border); }
   .rule-diamond { width: 6px; height: 6px; background: var(--accent-gold); transform: rotate(45deg); }
 
@@ -100,7 +95,7 @@
     overflow: hidden;
     transition: border-color 0.3s, box-shadow 0.3s;
     box-shadow: 0 2px 16px var(--shadow);
-    margin-bottom: 12px;
+    margin-bottom: 4px;
   }
 
   .search-box:focus-within {
@@ -150,11 +145,8 @@
 
   #searchBtn:hover { background: var(--ink); }
 
-  /* Suggestions dropdown */
-  #suggestions {
-    position: relative;
-    margin-bottom: 32px;
-  }
+  /* Suggestions */
+  #suggestionsWrap { position: relative; margin-bottom: 32px; }
 
   .suggestions-list {
     background: rgba(250,247,240,0.98);
@@ -162,6 +154,7 @@
     border-top: none;
     box-shadow: 0 8px 24px var(--shadow);
     overflow: hidden;
+    border-radius: 0 0 2px 2px;
   }
 
   .suggestion-item {
@@ -184,26 +177,13 @@
     color: var(--ink);
   }
 
-  .sug-word mark {
-    background: none;
-    color: var(--accent);
-    font-style: normal;
-    font-weight: 700;
-  }
+  .sug-word mark { background: none; color: var(--accent); font-style: normal; font-weight: 700; }
+  .sug-type { font-size: 13px; color: var(--accent-gold); font-style: italic; opacity: 0.8; }
 
-  .sug-type {
-    font-size: 13px;
-    color: var(--accent-gold);
-    font-style: italic;
-    opacity: 0.8;
-  }
+  /* Alphabet */
+  .alphabet-index { margin-bottom: 36px; }
 
-  /* Alphabet index */
-  .alphabet-index {
-    margin-bottom: 36px;
-  }
-
-  .alphabet-label {
+  .section-label {
     font-size: 10px;
     letter-spacing: 0.3em;
     text-transform: uppercase;
@@ -212,11 +192,7 @@
     margin-bottom: 10px;
   }
 
-  .alphabet-letters {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 4px;
-  }
+  .alphabet-letters { display: flex; flex-wrap: wrap; gap: 4px; }
 
   .alpha-btn {
     padding: 4px 9px;
@@ -230,22 +206,12 @@
     border-radius: 1px;
   }
 
-  .alpha-btn:hover, .alpha-btn.active {
-    background: var(--accent);
-    color: var(--parchment);
-    border-color: var(--accent);
-  }
+  .alpha-btn:hover, .alpha-btn.active { background: var(--accent); color: var(--parchment); border-color: var(--accent); }
+  .alpha-btn:disabled { opacity: 0.25; cursor: default; }
+  .alpha-btn.clear-btn { border-color: var(--accent); color: var(--accent); font-family: 'Crimson Pro', serif; font-size: 12px; letter-spacing: 0.1em; }
+  .alpha-btn.clear-btn:hover { background: var(--accent); color: var(--parchment); }
 
-  .alpha-btn:disabled {
-    opacity: 0.3;
-    cursor: not-allowed;
-  }
-
-  /* Word list */
-  #wordList {
-    margin-bottom: 40px;
-  }
-
+  /* Word grid */
   .word-list-title {
     font-size: 11px;
     letter-spacing: 0.3em;
@@ -282,30 +248,13 @@
     box-shadow: 0 2px 8px var(--shadow);
   }
 
-  .chip-word {
-    font-family: 'Playfair Display', serif;
-    font-size: 16px;
-    font-style: italic;
-    color: var(--ink);
-  }
+  .chip-word { font-family: 'Playfair Display', serif; font-size: 16px; font-style: italic; color: var(--ink); }
+  .chip-type { font-size: 12px; color: var(--accent-gold); opacity: 0.8; font-style: italic; flex: 1; text-align: right; white-space: nowrap; }
 
-  .chip-type {
-    font-size: 12px;
-    color: var(--accent-gold);
-    opacity: 0.8;
-    font-style: italic;
-    flex: 1;
-    text-align: right;
-    white-space: nowrap;
-  }
-
-  /* Entry card */
+  /* Entry */
   #result { animation: fadeIn 0.45s ease; }
 
-  @keyframes fadeIn {
-    from { opacity: 0; transform: translateY(12px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
+  @keyframes fadeIn { from { opacity:0; transform:translateY(12px); } to { opacity:1; transform:translateY(0); } }
 
   .entry-card {
     background: rgba(255,255,255,0.55);
@@ -321,8 +270,7 @@
   .entry-card::before {
     content: '§';
     position: absolute;
-    top: 16px;
-    right: 24px;
+    top: 16px; right: 24px;
     font-family: 'Playfair Display', serif;
     font-size: 36px;
     color: var(--border);
@@ -358,13 +306,7 @@
     margin-bottom: 10px;
   }
 
-  .entry-meta {
-    display: flex;
-    align-items: center;
-    gap: 16px;
-    margin-bottom: 28px;
-    flex-wrap: wrap;
-  }
+  .entry-meta { display: flex; align-items: center; gap: 16px; margin-bottom: 28px; flex-wrap: wrap; }
 
   .entry-type {
     font-size: 14px;
@@ -376,12 +318,7 @@
     font-weight: 300;
   }
 
-  .entry-pronunciation {
-    font-size: 15px;
-    color: var(--ink-light);
-    opacity: 0.6;
-    font-style: italic;
-  }
+  .entry-pronunciation { font-size: 15px; color: var(--ink-light); opacity: 0.6; font-style: italic; }
 
   .entry-divider {
     height: 1px;
@@ -398,13 +335,7 @@
     margin-bottom: 12px;
   }
 
-  .entry-definition {
-    font-size: 19px;
-    line-height: 1.75;
-    color: var(--ink);
-    font-weight: 300;
-    margin-bottom: 28px;
-  }
+  .entry-definition { font-size: 19px; line-height: 1.75; color: var(--ink); font-weight: 300; margin-bottom: 28px; }
 
   .entry-example {
     font-style: italic;
@@ -417,16 +348,7 @@
     opacity: 0.8;
   }
 
-  .entry-sinonimos {
-    margin-bottom: 28px;
-  }
-
-  .tag-list {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-    margin-top: 10px;
-  }
+  .tag-list { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
 
   .tag {
     background: rgba(184,134,11,0.08);
@@ -442,7 +364,7 @@
 
   .tag:hover { background: rgba(139,46,0,0.07); border-color: var(--accent); color: var(--accent); }
 
-  /* Conjugation button */
+  /* Conjugate btn */
   .conjugate-btn {
     display: inline-flex;
     align-items: center;
@@ -459,20 +381,17 @@
     transition: all 0.25s;
     text-transform: uppercase;
     border-radius: 1px;
+    margin-top: 8px;
   }
 
   .conjugate-btn:hover { background: var(--accent); color: var(--parchment); }
   .conjugate-btn svg { transition: transform 0.3s; }
   .conjugate-btn.open svg { transform: rotate(180deg); }
 
-  /* Conjugation table */
+  /* Conjugation panel */
   #conjugationPanel { margin-top: 32px; animation: fadeIn 0.4s ease; }
 
-  .conj-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-    gap: 20px;
-  }
+  .conj-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 20px; }
 
   .conj-tense {
     background: rgba(248,244,236,0.8);
@@ -501,38 +420,8 @@
   }
 
   .conj-row:last-child { border-bottom: none; }
-
-  .conj-pronoun {
-    color: var(--ink-light);
-    opacity: 0.7;
-    font-size: 14px;
-    font-style: italic;
-    min-width: 95px;
-  }
-
+  .conj-pronoun { color: var(--ink-light); opacity: 0.7; font-size: 14px; font-style: italic; min-width: 95px; }
   .conj-form { font-weight: 600; color: var(--ink); }
-
-  /* Not found */
-  .not-found {
-    text-align: center;
-    padding: 60px 40px;
-    color: var(--ink-light);
-  }
-
-  .not-found-word {
-    font-family: 'Playfair Display', serif;
-    font-size: 40px;
-    font-style: italic;
-    color: var(--border);
-    margin-bottom: 16px;
-  }
-
-  .not-found p {
-    font-size: 17px;
-    font-style: italic;
-    opacity: 0.6;
-    line-height: 1.7;
-  }
 
   /* Stats bar */
   .stats-bar {
@@ -558,7 +447,26 @@
     font-style: italic;
   }
 
-  /* Footer */
+  /* Not found */
+  .not-found { text-align: center; padding: 60px 40px; color: var(--ink-light); }
+  .not-found-word { font-family: 'Playfair Display', serif; font-size: 40px; font-style: italic; color: var(--border); margin-bottom: 16px; }
+  .not-found p { font-size: 17px; font-style: italic; opacity: 0.6; line-height: 1.7; }
+  .not-found code { font-style: normal; background: rgba(200,185,154,0.2); padding: 1px 6px; border-radius: 2px; font-size: 15px; }
+
+  /* Error banner */
+  .error-banner {
+    background: rgba(139,46,0,0.07);
+    border: 1px solid rgba(139,46,0,0.25);
+    padding: 20px 28px;
+    border-radius: 2px;
+    margin-bottom: 32px;
+    font-size: 16px;
+    line-height: 1.7;
+    color: var(--accent);
+  }
+
+  .error-banner code { font-style: normal; background: rgba(139,46,0,0.1); padding: 1px 6px; border-radius: 2px; font-size: 14px; }
+
   footer {
     text-align: center;
     margin-top: 60px;
@@ -587,21 +495,17 @@
     <h1>Léxico</h1>
     <p class="tagline">El saber de las palabras, a tu alcance.</p>
     <div class="rule">
-      <span></span>
-      <div class="rule-diamond"></div>
-      <span></span>
+      <span></span><div class="rule-diamond"></div><span></span>
     </div>
   </header>
 
-  <!-- Search -->
   <div class="search-box">
     <div class="search-label">A</div>
     <input type="text" id="searchInput" placeholder="Buscar una palabra…" autocomplete="off" />
     <button id="searchBtn">Buscar</button>
   </div>
-  <div id="suggestions"></div>
+  <div id="suggestionsWrap"></div>
 
-  <!-- Main content area -->
   <div id="mainContent"></div>
   <div id="result"></div>
 
@@ -609,77 +513,81 @@
 </div>
 
 <script>
+// ── Bootstrap ─────────────────────────────────────────────────────
 let dictionary = [];
 let currentEntry = null;
 let conjugationOpen = false;
 
-// ── Load data ───────────────────────────────────────────────────
-async function loadDictionary() {
-  try {
-    const r = await fetch('./palabras.json');
-    if (!r.ok) throw new Error('No se pudo cargar palabras.json');
-    const data = await r.json();
-    dictionary = data.palabras.sort((a, b) =>
-      a.palabra.localeCompare(b.palabra, 'es', { sensitivity: 'base' })
-    );
-    renderHome();
-  } catch (e) {
+function init() {
+  if (typeof LEXICO_DATA === 'undefined' || !LEXICO_DATA.palabras) {
     document.getElementById('mainContent').innerHTML = `
-      <div class="not-found">
-        <p class="not-found-word">Error</p>
-        <p>No se pudo cargar el archivo <code>palabras.json</code>.<br>
-        Asegúrate de que está en la misma carpeta que <code>index.html</code>.</p>
+      <div class="error-banner">
+        ⚠️ No se encontró <code>palabras.js</code>. Asegúrate de que el archivo está
+        en la misma carpeta que <code>index.html</code> y de que tiene el nombre exacto
+        <strong>palabras.js</strong>.
       </div>`;
+    return;
   }
+
+  dictionary = [...LEXICO_DATA.palabras].sort((a, b) =>
+    a.palabra.localeCompare(b.palabra, 'es', { sensitivity: 'base' })
+  );
+  renderHome();
 }
 
-// ── Home view ────────────────────────────────────────────────────
+// ── Home ──────────────────────────────────────────────────────────
 function renderHome(filterLetter = null) {
   document.getElementById('result').innerHTML = '';
+  document.getElementById('suggestionsWrap').innerHTML = '';
+  document.getElementById('searchInput').value = '';
   currentEntry = null;
   conjugationOpen = false;
 
   const total = dictionary.length;
   const verbCount = dictionary.filter(w => w.es_verbo).length;
+  const usedLetters = new Set(dictionary.map(w => w.palabra[0].toUpperCase()));
 
-  // Filter
   const words = filterLetter
     ? dictionary.filter(w => w.palabra[0].toLowerCase() === filterLetter.toLowerCase())
     : dictionary;
 
-  // Alphabet index — only show letters that have words
-  const letters = [...new Set(dictionary.map(w => w.palabra[0].toUpperCase()))].sort();
   const alphaHtml = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('').map(l => {
-    const has = letters.includes(l);
+    const has = usedLetters.has(l);
     const active = filterLetter && filterLetter.toUpperCase() === l;
     return `<button class="alpha-btn${active ? ' active' : ''}"
-      ${!has ? 'disabled' : ''}
-      onclick="${has ? `filterByLetter('${l}')` : ''}">${l}</button>`;
+      ${!has ? 'disabled' : `onclick="filterByLetter('${l}')"`}>${l}</button>`;
   }).join('');
 
-  const wordChips = words.map(w => `
-    <div class="word-chip" onclick="showEntry('${escHtml(w.palabra)}')">
-      <span class="chip-word">${w.palabra}</span>
-      <span class="chip-type">${w.tipo}</span>
-    </div>`).join('');
+  const clearBtn = filterLetter
+    ? `<button class="alpha-btn clear-btn" onclick="renderHome()">✕ Limpiar</button>`
+    : '';
+
+  const wordChips = words.length
+    ? words.map(w => `
+        <div class="word-chip" onclick="showEntry(${JSON.stringify(w.palabra)})">
+          <span class="chip-word">${esc(w.palabra)}</span>
+          <span class="chip-type">${esc(w.tipo)}</span>
+        </div>`).join('')
+    : `<p style="font-style:italic;opacity:0.5;font-size:16px;padding:8px 0">
+         No hay palabras con esta letra todavía.</p>`;
 
   document.getElementById('mainContent').innerHTML = `
     <div class="stats-bar">
-      <span>Total de palabras: <strong>${total}</strong></span>
+      <span>Total: <strong>${total}</strong></span>
       <span>Verbos: <strong>${verbCount}</strong></span>
       <span>Otras: <strong>${total - verbCount}</strong></span>
     </div>
 
     <div class="alphabet-index">
-      <p class="alphabet-label">Índice alfabético</p>
-      <div class="alphabet-letters">${alphaHtml}
-        ${filterLetter ? `<button class="alpha-btn" onclick="renderHome()" style="border-color:var(--accent);color:var(--accent)">✕ Limpiar</button>` : ''}
-      </div>
+      <p class="section-label">Índice alfabético</p>
+      <div class="alphabet-letters">${alphaHtml}${clearBtn}</div>
     </div>
 
     <div id="wordList">
       <p class="word-list-title">
-        ${filterLetter ? `Palabras con "${filterLetter.toUpperCase()}" — ${words.length} encontradas` : 'Todas las palabras'}
+        ${filterLetter
+          ? `Palabras con &ldquo;${filterLetter.toUpperCase()}&rdquo; — ${words.length} encontrada${words.length !== 1 ? 's' : ''}`
+          : 'Todas las palabras'}
       </p>
       <div class="word-list-grid">${wordChips}</div>
     </div>`;
@@ -687,7 +595,7 @@ function renderHome(filterLetter = null) {
 
 function filterByLetter(l) { renderHome(l); }
 
-// ── Show entry ──────────────────────────────────────────────────
+// ── Show entry ────────────────────────────────────────────────────
 function showEntry(wordName) {
   const entry = dictionary.find(w =>
     w.palabra.toLowerCase() === wordName.toLowerCase()
@@ -697,49 +605,47 @@ function showEntry(wordName) {
   currentEntry = entry;
   conjugationOpen = false;
   document.getElementById('mainContent').innerHTML = '';
-  document.getElementById('suggestions').innerHTML = '';
+  document.getElementById('suggestionsWrap').innerHTML = '';
   document.getElementById('searchInput').value = entry.palabra;
   window.scrollTo({ top: 0, behavior: 'smooth' });
 
-  renderEntry(entry);
-}
-
-function renderEntry(e) {
-  const sinonimosHtml = e.sinonimos?.length
-    ? `<div class="entry-sinonimos">
+  const sinonimosHtml = entry.sinonimos?.length
+    ? `<div style="margin-bottom:28px">
         <p class="entry-section-label">Sinónimos</p>
-        <div class="tag-list">${e.sinonimos.map(s =>
-          `<span class="tag" onclick="showEntry('${escHtml(s)}')" title="Buscar '${escHtml(s)}'">${s}</span>`
-        ).join('')}</div>
+        <div class="tag-list">
+          ${entry.sinonimos.map(s => {
+            const exists = dictionary.some(w => w.palabra.toLowerCase() === s.toLowerCase());
+            return `<span class="tag" ${exists ? `onclick="showEntry(${JSON.stringify(s)})"` : ''} title="${exists ? `Ir a '${esc(s)}'` : 'Palabra no en el diccionario'}" style="${!exists ? 'cursor:default;opacity:0.5' : ''}">${esc(s)}</span>`;
+          }).join('')}
+        </div>
        </div>`
     : '';
 
-  const conjugateBtn = e.es_verbo && e.conjugaciones
+  const conjugateBtn = entry.es_verbo && entry.conjugaciones
     ? `<button class="conjugate-btn" id="conjugateBtn" onclick="toggleConjugation()">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg>
         Ver conjugaciones
       </button>`
     : '';
 
-  const resultEl = document.getElementById('result');
-  resultEl.innerHTML = `
+  document.getElementById('result').innerHTML = `
     <div class="entry-card">
       <button class="back-btn" onclick="renderHome()">
         <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
         Volver al índice
       </button>
 
-      <p class="entry-word">${e.palabra}</p>
+      <p class="entry-word">${esc(entry.palabra)}</p>
       <div class="entry-meta">
-        <span class="entry-type">${e.tipo}</span>
-        ${e.pronunciacion ? `<span class="entry-pronunciation">[ ${e.pronunciacion} ]</span>` : ''}
+        <span class="entry-type">${esc(entry.tipo)}</span>
+        ${entry.pronunciacion ? `<span class="entry-pronunciation">[ ${esc(entry.pronunciacion)} ]</span>` : ''}
       </div>
       <div class="entry-divider"></div>
 
       <p class="entry-section-label">Definición</p>
-      <p class="entry-definition">${e.definicion}</p>
+      <p class="entry-definition">${esc(entry.definicion)}</p>
 
-      ${e.ejemplo ? `<p class="entry-example">"${e.ejemplo}"</p>` : ''}
+      ${entry.ejemplo ? `<p class="entry-example">"${esc(entry.ejemplo)}"</p>` : ''}
 
       ${sinonimosHtml}
       ${conjugateBtn}
@@ -747,7 +653,7 @@ function renderEntry(e) {
     </div>`;
 }
 
-// ── Conjugations ─────────────────────────────────────────────────
+// ── Conjugations ──────────────────────────────────────────────────
 function toggleConjugation() {
   const panel = document.getElementById('conjugationPanel');
   const btn = document.getElementById('conjugateBtn');
@@ -755,23 +661,17 @@ function toggleConjugation() {
 
   conjugationOpen = !conjugationOpen;
   btn.classList.toggle('open', conjugationOpen);
+  panel.style.display = conjugationOpen ? 'block' : 'none';
+  if (!conjugationOpen) return;
 
-  if (!conjugationOpen) {
-    panel.style.display = 'none';
-    return;
-  }
-
-  panel.style.display = 'block';
-  const conj = currentEntry.conjugaciones;
   const pronouns = ['yo', 'tú', 'él/ella', 'nosotros', 'vosotros', 'ellos/ellas'];
-
-  const tensesHtml = Object.entries(conj).map(([tense, forms]) => `
+  const tensesHtml = Object.entries(currentEntry.conjugaciones).map(([tense, forms]) => `
     <div class="conj-tense">
-      <div class="conj-tense-name">${tense}</div>
+      <div class="conj-tense-name">${esc(tense)}</div>
       ${pronouns.map(p => forms[p] ? `
         <div class="conj-row">
-          <span class="conj-pronoun">${p}</span>
-          <span class="conj-form">${forms[p]}</span>
+          <span class="conj-pronoun">${esc(p)}</span>
+          <span class="conj-form">${esc(forms[p])}</span>
         </div>` : '').join('')}
     </div>`).join('');
 
@@ -782,84 +682,79 @@ function toggleConjugation() {
     </div>`;
 }
 
-// ── Live search / suggestions ────────────────────────────────────
-function getSuggestions(query) {
-  if (!query || query.length < 1) return [];
-  const q = query.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
-  return dictionary.filter(w => {
-    const normalized = w.palabra.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
-    return normalized.startsWith(q) || normalized.includes(q);
-  }).slice(0, 7);
-}
-
-function highlightMatch(word, query) {
-  const q = query.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
-  const norm = word.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
-  const idx = norm.indexOf(q);
-  if (idx === -1) return word;
-  return word.slice(0, idx) + `<mark>${word.slice(idx, idx + query.length)}</mark>` + word.slice(idx + query.length);
+// ── Live suggestions ──────────────────────────────────────────────
+function normalize(str) {
+  return str.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
 }
 
 function renderSuggestions(query) {
-  const sugEl = document.getElementById('suggestions');
-  if (!query) { sugEl.innerHTML = ''; return; }
-  const matches = getSuggestions(query);
-  if (!matches.length) { sugEl.innerHTML = ''; return; }
+  const wrap = document.getElementById('suggestionsWrap');
+  if (!query) { wrap.innerHTML = ''; return; }
+  const q = normalize(query);
+  const matches = dictionary
+    .filter(w => normalize(w.palabra).startsWith(q) || normalize(w.palabra).includes(q))
+    .slice(0, 7);
 
-  sugEl.innerHTML = `<div class="suggestions-list">
-    ${matches.map(w => `
-      <div class="suggestion-item" onclick="showEntry('${escHtml(w.palabra)}')">
-        <span class="sug-word">${highlightMatch(w.palabra, query)}</span>
-        <span class="sug-type">${w.tipo}</span>
-      </div>`).join('')}
+  if (!matches.length) { wrap.innerHTML = ''; return; }
+
+  wrap.innerHTML = `<div class="suggestions-list">
+    ${matches.map(w => {
+      const norm = normalize(w.palabra);
+      const idx = norm.indexOf(q);
+      const highlighted = idx === -1
+        ? esc(w.palabra)
+        : esc(w.palabra.slice(0, idx)) +
+          `<mark>${esc(w.palabra.slice(idx, idx + query.length))}</mark>` +
+          esc(w.palabra.slice(idx + query.length));
+      return `<div class="suggestion-item" onclick="showEntry(${JSON.stringify(w.palabra)})">
+        <span class="sug-word">${highlighted}</span>
+        <span class="sug-type">${esc(w.tipo)}</span>
+      </div>`;
+    }).join('')}
   </div>`;
 }
 
-// ── Search (on button / enter) ────────────────────────────────────
+// ── Search ────────────────────────────────────────────────────────
 function search() {
   const q = document.getElementById('searchInput').value.trim();
   if (!q) return;
-  document.getElementById('suggestions').innerHTML = '';
+  document.getElementById('suggestionsWrap').innerHTML = '';
 
   const exact = dictionary.find(w => w.palabra.toLowerCase() === q.toLowerCase());
   if (exact) { showEntry(exact.palabra); return; }
 
-  const partial = getSuggestions(q);
+  const partial = dictionary.filter(w => normalize(w.palabra).includes(normalize(q)));
   if (partial.length === 1) { showEntry(partial[0].palabra); return; }
 
-  // No match
   document.getElementById('mainContent').innerHTML = '';
   document.getElementById('result').innerHTML = `
     <div class="not-found">
-      <p class="not-found-word">${escHtml(q)}</p>
+      <p class="not-found-word">${esc(q)}</p>
       <p>Esta palabra no está en el diccionario todavía.<br>
-      Añádela en <code>palabras.json</code> para que aparezca aquí.</p>
+      Añádela en <code>palabras.js</code> para que aparezca aquí.</p>
     </div>`;
 }
 
-// ── Utils ────────────────────────────────────────────────────────
-function escHtml(str) {
-  return str.replace(/[&<>"']/g, c =>
+// ── Utils ─────────────────────────────────────────────────────────
+function esc(str) {
+  return String(str).replace(/[&<>"']/g, c =>
     ({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[c]));
 }
 
-// ── Events ───────────────────────────────────────────────────────
+// ── Events ────────────────────────────────────────────────────────
 document.getElementById('searchBtn').addEventListener('click', search);
-document.getElementById('searchInput').addEventListener('input', e => {
-  renderSuggestions(e.target.value.trim());
-});
+document.getElementById('searchInput').addEventListener('input', e => renderSuggestions(e.target.value.trim()));
 document.getElementById('searchInput').addEventListener('keydown', e => {
   if (e.key === 'Enter') search();
-  if (e.key === 'Escape') document.getElementById('suggestions').innerHTML = '';
+  if (e.key === 'Escape') document.getElementById('suggestionsWrap').innerHTML = '';
 });
 document.addEventListener('click', e => {
-  if (!e.target.closest('.search-box') && !e.target.closest('#suggestions')) {
-    document.getElementById('suggestions').innerHTML = '';
-  }
+  if (!e.target.closest('.search-box') && !e.target.closest('#suggestionsWrap'))
+    document.getElementById('suggestionsWrap').innerHTML = '';
 });
 
-// ── Init ─────────────────────────────────────────────────────────
-loadDictionary();
+// ── Init ──────────────────────────────────────────────────────────
+init();
 </script>
 </body>
 </html>
